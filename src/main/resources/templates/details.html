@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{main}">
+
+<body>
+<div layout:fragment="content">
+    <h5 class="mg-3 text-center" th:if="${!request.handled}" style="color: red">*** Новая заявка ****</h5>
+
+    <form id="ff" th:action="@{'/details/' + ${id}}" method="post" th:object="${request}">
+        <label class="form-label mb-3">ФИО: </label>
+        <input class="form-control" type="text" th:field="*{userName}" placeholder="ФИО" required>
+
+        <label class="form-label">Курс: </label>
+        <select class="form-select mb-3" th:field="*{courseName}">
+            <option value="" disabled >Выберите курс</option>
+            <option value="Java Standard Edition">Java Standard Edition</option>
+            <option value="Web Technologies">Web Technologies</option>
+            <option value="Python Programming Language">Python Programming Language</option>
+            <option value="UX/UI Design">UX/UI Design</option>
+            <option value="Java Pro">Java Pro</option>
+            <option value="Django Framework">Django Framework</option>
+        </select>
+        <label class="form-label">Тел: </label>
+        <input class="form-control mb-3" type="text" th:field="*{phone}" placeholder="+7(7__)_______" required>
+
+        <label class="form-label">Коментарии: </label>
+        <input class="form-control mb-3" type="text" th:field="*{commentary}" placeholder="Коментарии" required>
+    </form>
+
+    <button class="btn btn-success mb-3" th:if="${!request.handled}" form="ff" > Обработать заявку</button>
+
+    <form th:action="@{'/delete/' + ${id}}" th:object="${request}" style="display: inline-block" method="post">
+        <input type="hidden" th:field="*{id}">
+        <button class="btn btn-danger mb-3"> Удалить заявку</button>
+    </form>
+
+</div>
+</body>
+</html>
