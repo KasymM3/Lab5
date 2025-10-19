@@ -10,7 +10,7 @@
                 <div class="card-body">
                     <span th:if="${!r.handled}" style="color: red; font-weight: bold">* (Новая ) </span>
                     <h5 class=" card-title d-inline " th:text="'Заявка от ' + ${r.userName}"></h5>
-                    <p class="mb-1 text-muted"><b>Курс:</b> <span th:text="${r.courseName}"></span></p>
+                    <p class="mb-1 text-muted"><b>Курс:</b> <span th:text="${r.course.name}"></span></p>
                     <p th:text="${r.commentary}">Комментарий…</p>
                     <span class="mb-1"><b>Тел:</b> <span th:text="${r.phone}"></span></span>
                     <a th:href="@{'/details/' + ${r.id}}">Подробнее</a>

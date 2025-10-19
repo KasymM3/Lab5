@@ -21,8 +21,6 @@ public class ApplicationRequest {
     private Long id;
     @Column(name = "userName")
     private String userName;
-    @Column(name = "courseName")
-    private String courseName;
     @Column(name = "commentary")
     private String commentary;
     @Column(name = "phone")

@@ -6,19 +6,13 @@
 <div layout:fragment="content">
     <h5 class="mg-3 text-center" th:if="${!request.handled}" style="color: red">*** Новая заявка ****</h5>
 
-    <form id="ff" th:action="@{'/details/' + ${id}}" method="post" th:object="${request}">
+    <form th:object="${request}">
         <label class="form-label mb-3">ФИО: </label>
         <input class="form-control" type="text" th:field="*{userName}" placeholder="ФИО" required>
 
         <label class="form-label">Курс: </label>
-        <select class="form-select mb-3" th:field="*{courseName}">
-            <option value="" disabled >Выберите курс</option>
-            <option value="Java Standard Edition">Java Standard Edition</option>
-            <option value="Web Technologies">Web Technologies</option>
-            <option value="Python Programming Language">Python Programming Language</option>
-            <option value="UX/UI Design">UX/UI Design</option>
-            <option value="Java Pro">Java Pro</option>
-            <option value="Django Framework">Django Framework</option>
+        <select class="form-select mb-3" th:field="*{course}">
+            <option th:each="course: ${courses}" th:value="${course.id}" th:text="${course.name+ ' $ '} + ${course.price} "></option>
         </select>
         <label class="form-label">Тел: </label>
         <input class="form-control mb-3" type="text" th:field="*{phone}" placeholder="+7(7__)_______" required>
@@ -27,13 +21,92 @@
         <input class="form-control mb-3" type="text" th:field="*{commentary}" placeholder="Коментарии" required>
     </form>
 
-    <button class="btn btn-success mb-3" th:if="${!request.handled}" form="ff" > Обработать заявку</button>
 
+    <button type="button"
+            class="btn btn-success mb-3"
+            data-bs-toggle="modal"
+            data-bs-target="#operatorsModal"
+            th:if="${!request.handled}">
+        Обработать заявку
+    </button>
     <form th:action="@{'/delete/' + ${id}}" th:object="${request}" style="display: inline-block" method="post">
         <input type="hidden" th:field="*{id}">
         <button class="btn btn-danger mb-3"> Удалить заявку</button>
     </form>
 
+
+    <div class="modal fade" id="operatorsModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title">Выберите оператора</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+
+                <form th:action="@{'/assign/'+ ${id}}" method="post">
+                    <div class="modal-body p-0">
+                        <table class="table mb-0">
+                            <thead>
+                            <tr>
+                                <th>Выбрать</th>
+                                <th>Имя</th>
+                                <th>Фамилия</th>
+                                <th>Департамент</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            <tr th:each="operator : ${operators}">
+                                <td><input class="form-check-input" type="checkbox" name="ids" th:value="${operator.id}"/></td>
+                                <td th:text="${operator.name}"></td>
+                                <td th:text="${operator.surname}"></td>
+                                <td th:text="${operator.department}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                        <button type="submit" class="btn btn-primary">Назначить</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="mt-4" th:if="${request.handled}">
+        <h5>Назначенные операторы</h5>
+
+        <table class="table table-striped align-middle">
+            <thead>
+            <tr>
+                <th>Удалить</th>
+                <th>Имя</th>
+                <th>Фамилия</th>
+                <th>Департамент</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="operetor : ${request.operators}">
+                <td>
+                    <form th:action="@{'/requests/'+ ${request.id}+ '/operators/'+ ${operetor.id} +'/delete'}" method="post">
+                        <button type="submit" class="btn btn-danger btn-sm">X</button>
+                    </form>
+                </td>
+                <td th:text="${operetor.name}"></td>
+                <td th:text="${operetor.surname}"></td>
+                <td th:text="${operetor.department}"></td>
+            </tr>
+            </tbody>
+        </table>
+
+    </div>
 </div>
 </body>
 </html>

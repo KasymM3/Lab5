@@ -11,14 +11,9 @@
         <input class="form-control mb-3" type="text" th:field="*{userName}" placeholder="ФИО" required>
 
         <label class="form-label">Курс: </label>
-        <select class="form-select mb-3" th:field="*{courseName}" required>
+        <select class="form-select mb-3" th:field="*{course}" required>
             <option value="" disabled >Выберите курс</option>
-            <option value="Java Standard Edition">Java Standard Edition</option>
-            <option value="Web Technologies">Web Technologies</option>
-            <option value="Python Programming Language">Python Programming Language</option>
-            <option value="UX/UI Design">UX/UI Design</option>
-            <option value="Java Pro">Java Pro</option>
-            <option value="Django Framework">Django Framework</option>
+            <option th:each="course: ${courses}" th:value="${course.id}" th:text="${course.name + ' $ '} + ${course.price} "></option>
         </select>
 
         <label class="form-label">Тел: </label>

@@ -3,20 +3,19 @@ package kz.lab5.lab5.Service;
 
 import kz.lab5.lab5.Entity.ApplicationRequest;
 import kz.lab5.lab5.Repository.AppRequestRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class AppRequestService {
 
     private final AppRequestRepository appRequestRepository;
 
-    @Autowired
-    public AppRequestService(AppRequestRepository appRequestRepository) {
-        this.appRequestRepository = appRequestRepository;
-    }
+
 
     public List<ApplicationRequest> findAll(){
         return appRequestRepository.findAll();
